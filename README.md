@@ -1,5 +1,66 @@
 This is a repo modified from [dashing2](https://github.com/dnbaker/dashing2). This modified version build a pipeline that can take sourmash signature (FracMinHash values) as input and build sketch. 
 
+## Pipeline Overview
+
+### Use python script `sourmash_to_dashing2_parallel.py`
+
+convert yacht_yacht_batch_*_files.tar.gz files to a bin file.
+
+```
+python sourmash_to_dashing2_parallel.py \
+  -i /scratch/shared_data_new/Logan_yacht_data/raw_downloads/yacht_yacht_batch_*_files.tar.gz \
+  -o global_database \
+  -t 8 \
+  -n db_name \
+  -k 31
+```
+
+Expected output
+
+```
+output/
+├── global_database_hashes.bin       # used for wsketch
+├── global_database_indptr.bin       # used for wsketch
+├── global_database_names.txt        # used for name when we do dashing2 wsketch
+├── global_database_metadata.json    # metadata
+└── batch_mapping.json               # Batch information
+```
+
+### Call `dashing2 wsketch`
+
+```
+dashing2 wsketch -S 2048 -o db_name hash.bin - indptr.bin -p 50 -q -o
+```
+
+Note: 
+
+Usage: dashing2 wsketch [input.bin] <Optional: input.weights.bin> <Optional: indptr.bin for CSR data>
+
+If only one path is provided, it treated as indices, and sketched via SetSketch; IE, everything is sketched with equal weight.
+If two paths are provided, the second is treated as a weight vector, and the multiset is sketched via ProbMinHash or BagMinHash. (In our case, every kmer/hash value is treated as equal weight, so we use `-`  to occupy the position)
+If three paths are provided, the second is treated as a weight vector, and the last is used as indptr; this yields a stacked set of sketches corresponding to the input matrix.
+
+-q: Sketch with SetSketch
+-o: outprefix. If unset, uses [input.bin]
+Runtime options:
+-p: Set number of threads (processes) [1]
+
+
+
+### Calculating all-vs-all distance
+
+```
+dashing2 cmp --presketched db_name.ss --cmpout distances.txt 
+```
+
+### Calculating TopK or greater-than threshold neighbors 
+
+...
+
+
+
+---------------------------Following is the original instructions from dashing2--------------------
+
 
 
 ## Introduction

@@ -307,7 +307,8 @@ int wsketch_main(int argc, char **argv) {
             }
         }
         std::fclose(fp);
-        of =  outpref + ".sampled.regs.stacked." + std::to_string(nsketches) + "." + std::to_string(sketchsize) + ".f" + std::to_string(sizeof(RegT) * 8);
+        //of =  outpref + ".sampled.regs.stacked." + std::to_string(nsketches) + "." + std::to_string(sketchsize) + ".fof =  outpref +" + std::to_string(sizeof(RegT) * 8);
+        of =  outpref + ".ss";
         fp = bfopen(of.data(), "wb");
         if(fp == nullptr) THROW_EXCEPTION(std::runtime_error("Failed to open " + of));
         checked_fwrite(fp, &nsketches, sizeof(nsketches));
