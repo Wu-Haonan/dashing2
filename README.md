@@ -1,4 +1,4 @@
-This is a repo modified from [dashing2](https://github.com/dnbaker/dashing2). This modified version build a pipeline that can take sourmash signature (FracMinHash values) as input and build sketch. 
+This is a repo modified from [dashing2](https://github.com/dnbaker/dashing2). This modified version builds a pipeline that can take sourmash signatures (FracMinHash values) as input and build sketch. 
 
 ## Pipeline Overview
 
@@ -15,21 +15,21 @@ python sourmash_to_dashing2_parallel.py \
   -k 31
 ```
 
-Expected output
+**Expected output**
 
 ```
 output/
-├── global_database_hashes.bin       # used for wsketch
-├── global_database_indptr.bin       # used for wsketch
-├── global_database_names.txt        # used for name when we do dashing2 wsketch
-├── global_database_metadata.json    # metadata
-└── batch_mapping.json               # Batch information
+├── db_name_hashes.bin       # used for wsketch
+├── db_name_indptr.bin       # used for wsketch
+├── db_name.ss.names.txt     # used for name when we do dashing2 wsketch
+├── db_name_metadata.json    # metadata
+└── batch_mapping.json       # Batch information
 ```
 
 ### Call `dashing2 wsketch`
 
 ```
-dashing2 wsketch -S 2048 -o db_name hash.bin - indptr.bin -p 50 -q -o
+dashing2 wsketch -S 2048 -o db_name hash.bin - indptr.bin -p 50 -q
 ```
 
 Note: 
@@ -44,6 +44,16 @@ If three paths are provided, the second is treated as a weight vector, and the l
 -o: outprefix. If unset, uses [input.bin]
 Runtime options:
 -p: Set number of threads (processes) [1]
+
+**Expected outputs **
+
+```
+output/
+├── db_name.ss      # database sketch results (I modified dashing2 orignal code to change the name)
+├── db_name.sampled.hashes.stacked.5000.2048.i64     # don't use in the following
+├── db_name.sampled.indices.stacked.5000.2048.i64    # don't use in the following
+└── db_name.sampled.info.txt                         # don't use in the following
+```
 
 
 
