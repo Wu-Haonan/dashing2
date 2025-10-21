@@ -1,3 +1,7 @@
+This is a repo modified from [dashing2](https://github.com/dnbaker/dashing2). This modified version build a pipeline that can take sourmash signature (FracMinHash values) as input and build sketch. 
+
+
+
 ## Introduction
 
 Dashing2 is the second version of the Dashing sequence sketching and comparison system.
@@ -21,16 +25,16 @@ Input Formats -- See [inputs](#inputs) below for details.
    1. Default -- ACGT
    2. Protein encoding - 20 characters (`--protein`)
    3. Reduced alphabets
-     1. Protein - 14, 8, and 6-character alphabets for long-distance homology.
+          1. Protein - 14, 8, and 6-character alphabets for long-distance homology.
    4. Optional -- generating 128-bit k-mers (`--long-kmers`)
    5. All k-mer parsing can be winnowed by setting `--window-size` to be > k
    6. Seeds can be spaced by providing a `--spacing` option, which provides the number of ignored characters in between used characters for seeds.
    7. Exact multiset comparisons (`--countdict`)
    8. Weight-aware sketching -- multiset and probability distribution
-     1. We use BagMinHash for weighted sets (`--bagminhash` or `--multiset`), and ProbMinHash for discrete probability distributions (`--prob`)
+          1. We use BagMinHash for weighted sets (`--bagminhash` or `--multiset`), and ProbMinHash for discrete probability distributions (`--prob`)
    9. Minimizer sequence transduction
-     1. By enabling `--seq`, a sequence of minimizer values are emitted as a string.
-     2. This can be used for simple minimizer generation, or these minimizer sequences's edit distances can be compared in downstream analysis.
+          1. By enabling `--seq`, a sequence of minimizer values are emitted as a string.
+          2. This can be used for simple minimizer generation, or these minimizer sequences's edit distances can be compared in downstream analysis.
  2. Splicing data
    1. LeafCutter splicing output files `--leafcutter`
  3. Interval Sets
