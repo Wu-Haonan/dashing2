@@ -29,13 +29,15 @@ std::vector<SimpleMHRet> minhash_rowwise_csr(const FT *weights, const IT *indice
         BMH h(construct<BMH>(m));
         const size_t b = indptr[i], e = indptr[i + 1];
         for(size_t j = b; j < e; ++j) {
-            h.update(j - b, weights ? weights[j]: FT(1));
+            //h.update(j - b, weights ? weights[j]: FT(1));
+            h.update(indices[j], weights ? weights[j]: FT(1));  
         }
         if constexpr(!std::is_same_v<BMH, FullSetSketch>) h.finalize();
         std::get<3>(ret[i]) = total_weight(h);
         std::vector<uint64_t> ids(m);
         auto &hids = h.ids();
-        std::transform(hids.begin(), hids.end(), ids.begin(), [ind=indices + b](auto x) {return ind[x];});
+        //std::transform(hids.begin(), hids.end(), ids.begin(), [ind=indices + b](auto x) {return ind[x];});
+        std::copy(hids.begin(), hids.end(), ids.begin());
         std::get<0>(ret[i]) = h.template to_sigs<RegT>();
         std::get<1>(ret[i]) = h.template to_sigs<uint64_t>();
         std::get<2>(ret[i]) = ids;
